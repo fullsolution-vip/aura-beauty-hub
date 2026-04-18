@@ -1,4 +1,4 @@
-# Aura Beauty Hub
+# Full Solution Web
 
 A premium beauty and skincare e-commerce platform built with TanStack Start.
 
