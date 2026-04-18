@@ -4,7 +4,7 @@ A premium beauty and skincare e-commerce platform built with TanStack Start.
 
 ## Live Demo
 
-**Live URL:** https://frederickishimwe.github.io/aura-beauty-hub/
+**Live URL:** https://fullsolution-vip.github.io/aura-beauty-hub/
 
 ## Development
 

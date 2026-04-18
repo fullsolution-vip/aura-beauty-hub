@@ -29,7 +29,27 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          # Create index.html for SPA fallback
+          cat > dist/client/index.html << 'INDX'
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Aura Beauty Hub</title>
+              <meta name="description" content="Premium beauty and skincare products" />
+              <base href="/aura-beauty-hub/" />
+              <link rel="icon" type="image/svg+xml" href="assets/flask-conical-BIAyPJV7.js" />
+              <link rel="stylesheet" href="assets/styles-DPqdsFEz.css" />
+            </head>
+            <body>
+              <div id="root">Loading...</div>
+              <script type="module" src="assets/index-DZ0tBDi8.js"></script>
+            </body>
+          </html>
+          INDX
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
