@@ -185,23 +185,6 @@
   color: transparent;
 }
 
-@utility shimmer-border {
-  position: relative;
-}
-@utility shimmer-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--color-gold), transparent 40%, var(--color-gold));
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-}
 
 @keyframes float-slow {
   0%, 100% { transform: translateY(0px); }
