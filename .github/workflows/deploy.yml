@@ -1,7 +1,6 @@
-name: Deploy to GitHub Pages
+name: Deploy to Cloudflare Pages
 
-# Live site: https://fullsolution-vip.github.io/aura-beauty-hub/
-# Preview: Check Actions tab for deployment
+# Live site: https://aura-beauty-hub.pages.dev
 
 on:
   push:
@@ -14,12 +13,8 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,75 +29,13 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: |
-          npm run build
+        run: npm run build
 
-          # Find the actual hashed filenames
-          MAIN_JS=$(ls dist/client/assets/index-*.js | grep -v 'index-C' | head -1)
-          CSS_FILE=$(ls dist/client/assets/styles-*.css | head -1)
-          ICON_FILE=$(ls dist/client/assets/flask-conical-*.js | head -1)
-
-          echo "Main JS: $MAIN_JS"
-          echo "CSS: $CSS_FILE"
-          echo "Icon: $ICON_FILE"
-
-          # Extract just the filenames
-          MAIN_JS_NAME=$(basename "$MAIN_JS")
-          CSS_NAME=$(basename "$CSS_FILE")
-          ICON_NAME=$(basename "$ICON_FILE")
-
-          # Create index.html - use printf to properly interpolate variables
-          cat > dist/client/index.html <<HTMLEND
-          <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="UTF-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <title>Aura Beauty Hub</title>
-              <meta name="description" content="Premium beauty and skincare products" />
-              <style>
-                body { margin: 0; font-family: system-ui, sans-serif; }
-                #root { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); }
-                .loader { text-align: center; padding: 40px; }
-                .loader h1 { color: #333; font-size: 2rem; margin-bottom: 10px; }
-                .loader p { color: #666; }
-                .spinner { width: 40px; height: 40px; border: 3px solid #ddd; border-top-color: #333; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
-                @keyframes spin { to { transform: rotate(360deg); } }
-              </style>
-              <base href="/aura-beauty-hub/" />
-              <link rel="icon" type="image/svg+xml" href="assets/${ICON_NAME}" />
-              <link rel="stylesheet" href="assets/${CSS_NAME}" />
-            </head>
-            <body>
-              <div id="root">
-                <div class="loader">
-                  <div class="spinner"></div>
-                  <h1>Aura Beauty Hub</h1>
-                  <p>Loading...</p>
-                </div>
-              </div>
-              <script type="module" src="assets/${MAIN_JS_NAME}"></script>
-            </body>
-          </html>
-          HTMLEND
-
-          # Copy to 404.html
-          cp dist/client/index.html dist/client/404.html
-
-          # List what we created
-          echo "=== Build output ==="
-          ls -la dist/client/index.html
-          ls -la dist/client/assets/
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          path: ./dist/client
-
-  deploy:
-    needs: build
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: aura-beauty-hub
+          branch: main
+          directory: dist/client
