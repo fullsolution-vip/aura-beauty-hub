@@ -34,7 +34,7 @@ jobs:
         run: |
           npm run build
           # Create index.html for SPA fallback
-          cat > dist/client/index.html << 'INDX'
+          cat > dist/client/index.html << 'EOF'
           <!DOCTYPE html>
           <html lang="en">
             <head>
@@ -51,12 +51,33 @@ jobs:
               <script type="module" src="assets/index-DZ0tBDi8.js"></script>
             </body>
           </html>
-          INDX
+          EOF
+          # Copy to 404.html
+          cp dist/client/index.html dist/client/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist/client
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./preview
+
+      - name: Verify build output
+        run: |
+          echo "=== Verifying build output ==="
+          ls -la ./preview/
+          echo ""
+          echo "=== Checking key files ==="
+          test -f ./preview/index.html && echo "✓ index.html exists" || echo "✗ index.html MISSING"
+          test -f ./preview/assets/index-DZ0tBDi8.js && echo "✓ Main JS exists" || echo "✗ Main JS MISSING"
+          test -f ./preview/assets/styles-DPqdsFEz.css && echo "✓ CSS exists" || echo "✗ CSS MISSING"
+          echo ""
+          echo "=== index.html content ==="
+          head -20 ./preview/index.html
 
   deploy:
     needs: build
