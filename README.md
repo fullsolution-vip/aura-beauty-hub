@@ -4,8 +4,7 @@ A premium beauty and skincare e-commerce platform built with TanStack Start.
 
 ## Live Demo
 
-**Live URL:** https://fullsolution-vip.github.io/aura-beauty-hub/
-
+**Live URL:** https://aura-beauty-hub.pages.dev
 
 ## Development
 
@@ -14,13 +13,15 @@ npm install
 npm run dev
 ```
 
-## Deployment
+## Deployment (Cloudflare Pages)
 
-The site is deployed automatically to GitHub Pages on push to main. To deploy manually:
+Automatic deployment on push to main via GitHub Actions.
+
+Manual deploy:
 
 ```bash
 npm run build
-npm run preview
+npx wrangler pages deploy dist/client
 ```
 
 ## Tech Stack
