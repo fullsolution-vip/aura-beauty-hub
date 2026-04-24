@@ -1,5 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Live site: https://fullsolution-vip.github.io/aura-beauty-hub/
+# Preview: Check Actions tab for deployment
+
 on:
   push:
     branches: [main, development]
@@ -25,7 +28,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install dependencies
         run: npm ci
@@ -48,8 +51,8 @@ jobs:
           CSS_NAME=$(basename "$CSS_FILE")
           ICON_NAME=$(basename "$ICON_FILE")
 
-          # Create index.html using actual filenames
-          cat > dist/client/index.html << EOF
+          # Create index.html - use printf to properly interpolate variables
+          cat > dist/client/index.html <<HTMLEND
           <!DOCTYPE html>
           <html lang="en">
             <head>
@@ -57,16 +60,31 @@ jobs:
               <meta name="viewport" content="width=device-width, initial-scale=1" />
               <title>Aura Beauty Hub</title>
               <meta name="description" content="Premium beauty and skincare products" />
+              <style>
+                body { margin: 0; font-family: system-ui, sans-serif; }
+                #root { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); }
+                .loader { text-align: center; padding: 40px; }
+                .loader h1 { color: #333; font-size: 2rem; margin-bottom: 10px; }
+                .loader p { color: #666; }
+                .spinner { width: 40px; height: 40px; border: 3px solid #ddd; border-top-color: #333; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+                @keyframes spin { to { transform: rotate(360deg); } }
+              </style>
               <base href="/aura-beauty-hub/" />
-              <link rel="icon" type="image/svg+xml" href="assets/$ICON_NAME" />
-              <link rel="stylesheet" href="assets/$CSS_NAME" />
+              <link rel="icon" type="image/svg+xml" href="assets/${ICON_NAME}" />
+              <link rel="stylesheet" href="assets/${CSS_NAME}" />
             </head>
             <body>
-              <div id="root">Loading...</div>
-              <script type="module" src="assets/$MAIN_JS_NAME"></script>
+              <div id="root">
+                <div class="loader">
+                  <div class="spinner"></div>
+                  <h1>Aura Beauty Hub</h1>
+                  <p>Loading...</p>
+                </div>
+              </div>
+              <script type="module" src="assets/${MAIN_JS_NAME}"></script>
             </body>
           </html>
-          EOF
+          HTMLEND
 
           # Copy to 404.html
           cp dist/client/index.html dist/client/404.html
