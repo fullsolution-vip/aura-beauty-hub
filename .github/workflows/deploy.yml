@@ -27,6 +27,19 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify Cloudflare Token
+        run: |
+          echo "=== Testing Cloudflare API Token ==="
+          curl -X GET "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json"
+          echo ""
+          echo "=== Testing Pages API ==="
+          curl -X GET "https://api.cloudflare.com/client/v4/pages/projects" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -H "X-Auth-Email: dummy@example.com" 2>/dev/null | head -100
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
