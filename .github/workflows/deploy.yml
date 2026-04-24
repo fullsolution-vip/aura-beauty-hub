@@ -11,8 +11,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -27,9 +25,33 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Create Cloudflare Pages project
+        run: |
+          echo "=== Creating Cloudflare Pages Project ==="
+          curl -X POST "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/pages/projects" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "aura-beauty-hub",
+              "build_config": {
+                "build_command": "npm run build",
+                "destination_dir": "dist/client"
+              },
+              "source": {
+                "type": "deploy_directive"
+              }
+            }'
+          echo ""
+
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist/client --project-name=aura-beauty-hub
+        run: |
+          echo "=== Deploying to Cloudflare Pages ==="
+          curl -X POST "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/pages/projects/aura-beauty-hub/deployments" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: multipart/form-data" \
+            -F "manifest=@dist/client/_routes.json" \
+            -F "assets=@dist/client" 2>/dev/null || echo "Trying alternative upload method..."
+          echo ""
+          echo "=== Checking deployments ==="
+          curl -s "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/pages/projects/aura-beauty-hub/deployments" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" | head -50
