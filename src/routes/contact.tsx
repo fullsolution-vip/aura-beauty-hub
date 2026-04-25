@@ -1,11 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Full Solution" },
-      { name: "description", content: "Get in touch with Full Solution about wholesale, private label and contract manufacturing." },
+      {
+        name: "description",
+        content:
+          "Get in touch with Full Solution about wholesale, private label and contract manufacturing.",
+      },
       { property: "og:title", content: "Contact — Full Solution" },
       { property: "og:description", content: "Speak with our wholesale team." },
     ],
@@ -19,8 +23,8 @@ function ContactPage() {
       <div>
         <p className="eyebrow">Contact</p>
         <h1 className="mt-4 font-serif text-5xl md:text-6xl leading-[1.05]">
-          Let's build the next{" "}
-          <span className="italic text-gold-gradient">shelf hero</span> together.
+          Let's build the next <span className="italic text-gold-gradient">shelf hero</span>{" "}
+          together.
         </h1>
         <p className="mt-6 text-muted-foreground leading-relaxed">
           Our wholesale team responds to every enquiry within one business day.
@@ -28,9 +32,10 @@ function ContactPage() {
 
         <div className="mt-10 space-y-5">
           {[
-            { i: Mail, l: "Email", v: "hello@fullsolution.vip" },
-            { i: Phone, l: "Phone", v: "+27 (0) 11 000 0000" },
-            { i: MapPin, l: "HQ", v: "Johannesburg, South Africa" },
+            { i: Mail, l: "Email", v: "robbie@fullsolution.vip" },
+            { i: Phone, l: "Phone", v: "068 707 4080" },
+            { i: Clock, l: "Business Hours", v: "Mon-Fri: 9AM-6PM SAST" },
+            { i: MapPin, l: "Location", v: "Northridge Costal Estate, Cape Farms, 7441" },
           ].map(({ i: Icon, l, v }) => (
             <div key={l} className="flex items-start gap-4">
               <div className="size-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
@@ -43,6 +48,11 @@ function ContactPage() {
             </div>
           ))}
         </div>
+
+        <div className="mt-10 p-6 rounded-2xl bg-secondary/50 border border-border">
+          <p className="font-medium">Lead Contact</p>
+          <p className="text-muted-foreground mt-1">Robbie Setton</p>
+        </div>
       </div>
 
       <form
@@ -53,10 +63,23 @@ function ContactPage() {
         }}
       >
         <div className="grid sm:grid-cols-2 gap-4">
-          <input required placeholder="Full name" className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
-          <input required placeholder="Company" className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
+          <input
+            required
+            placeholder="Full name"
+            className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40"
+          />
+          <input
+            required
+            placeholder="Company"
+            className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40"
+          />
         </div>
-        <input required type="email" placeholder="Work email" className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
+        <input
+          required
+          type="email"
+          placeholder="Work email"
+          className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40"
+        />
         <select className="w-full rounded-full border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40">
           <option>Wholesale enquiry</option>
           <option>Private label</option>
@@ -64,8 +87,15 @@ function ContactPage() {
           <option>Press / media</option>
           <option>Other</option>
         </select>
-        <textarea rows={5} placeholder="How can we help?" className="w-full rounded-3xl border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
-        <button type="submit" className="w-full rounded-full bg-primary text-primary-foreground px-7 py-3.5 text-sm font-medium hover:opacity-90 transition">
+        <textarea
+          rows={5}
+          placeholder="How can we help?"
+          className="w-full rounded-3xl border border-border bg-background px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40"
+        />
+        <button
+          type="submit"
+          className="w-full rounded-full bg-primary text-primary-foreground px-7 py-3.5 text-sm font-medium hover:opacity-90 transition"
+        >
           Send message
         </button>
       </form>

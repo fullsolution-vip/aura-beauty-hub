@@ -9,8 +9,8 @@ export function Footer() {
             Full <span className="italic text-gold-gradient">Solution</span>
           </div>
           <p className="mt-4 text-sm text-muted-foreground max-w-sm leading-relaxed">
-            Dermatologist-led beauty and personal care, formulated, manufactured
-            and packaged for retail partners worldwide.
+            Dermatologist-led beauty and personal care, formulated, manufactured and packaged for
+            retail partners worldwide.
           </p>
           <p className="mt-6 eyebrow">B-BBEE compliant · ISO 22716</p>
         </div>
@@ -18,19 +18,36 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-medium mb-4">Explore</h4>
           <ul className="space-y-2.5 text-sm text-muted-foreground">
-            <li><Link to="/products" className="hover:text-foreground">Products</Link></li>
-            <li><Link to="/science" className="hover:text-foreground">Our Science</Link></li>
-            <li><Link to="/about" className="hover:text-foreground">About</Link></li>
-            <li><Link to="/wholesale" className="hover:text-foreground">Wholesale</Link></li>
+            <li>
+              <Link to="/products" className="hover:text-foreground">
+                Products
+              </Link>
+            </li>
+            <li>
+              <Link to="/science" className="hover:text-foreground">
+                Our Science
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-foreground">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link to="/wholesale" className="hover:text-foreground">
+                Wholesale
+              </Link>
+            </li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-sm font-medium mb-4">Contact</h4>
           <ul className="space-y-2.5 text-sm text-muted-foreground">
-            <li>hello@fullsolution.vip</li>
-            <li>+27 (0) 11 000 0000</li>
-            <li>Johannesburg, South Africa</li>
+            <li>robbie@fullsolution.vip</li>
+            <li>068 707 4080</li>
+            <li>Mon-Fri: 9AM-6PM SAST</li>
+            <li>Cape Farms, 7441</li>
           </ul>
         </div>
       </div>
